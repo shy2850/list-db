@@ -13,7 +13,7 @@ var ListDB = function(db){
 
     try{
         this.list = JSON.parse( fs.readFileSync( this.root + MAIN_JSON, 'utf-8') );
-    }else{
+    }catch(e){
         this.list = [];
         fs.mkdir(this.root, {}, function(){
             fs.writeFile( this.root + MAIN_JSON, "[]" );   
