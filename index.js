@@ -4,29 +4,28 @@ var fs = require("fs"),
 var MAIN_JSON = "/index.json";
 var ListDB = function(db){
     if(this.constructor !== arguments.callee){
-        return new F2eDB(db);
+        return new ListDB(db);
     }else{
         this.db = db;
     }
     
-    this.root = path.join(__dirname, db);
-
+    var root = this.root = path.join(__dirname, db);
+    var list = this.list = [];
     try{
-        this.list = JSON.parse( fs.readFileSync( this.root + MAIN_JSON, 'utf-8') );
+        list = this.list = JSON.parse( fs.readFileSync( this.root + MAIN_JSON, 'utf-8') );
     }catch(e){
-        this.list = [];
-        fs.mkdir(this.root, {}, function(){
-            fs.writeFile( this.root + MAIN_JSON, "[]" );   
+        fs.mkdir(root, {}, function(){
+            fs.writeFile( root + MAIN_JSON, "[]" );   
         });
     }
 
     function save(){
         var tmp;
-        while(this.list.length > 200){
-            tmp = this.list.splice(0,100);
-            fs.writeFile( this.root + MAIN_JSON.replace(/\./, (+ new Date) + "."), JSON.stringify(tmp,null,4) );
+        while(list.length > 200){
+            tmp = list.splice(0,100);
+            fs.writeFile( root + MAIN_JSON.replace(/\./, (+ new Date) + "."), JSON.stringify(tmp,null,4) );
         }
-        fs.writeFile( this.root + MAIN_JSON , JSON.stringify(this.list,null,4) );
+        fs.writeFile( root + MAIN_JSON , JSON.stringify(list,null,4) );
         setTimeout(save, 1000*60*2);
     };
     save();
