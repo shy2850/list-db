@@ -37,9 +37,7 @@ ListDB.prototype.setModel = function(model, validate) {
 };
 
 ListDB.prototype.save = function(obj){
-    if( this.validate(obj) ){
-        this.list.push(obj);
-    }
+    this.list.push(obj);
 };
 
 ListDB.prototype.find = function(param){
